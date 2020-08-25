@@ -1,0 +1,22 @@
+.grid {
+  margin: 50px 0 0;
+}
+
+#counters {
+  display: flex;
+  justify-content: center;
+}
+
+#counters > h2 {
+  margin-top: -5px;
+  padding-right: 20px;
+}
+
+#btn {
+  margin-right: 20px;
+  background-color: mediumturquoise;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 5px 5px 10px grey;
+}
