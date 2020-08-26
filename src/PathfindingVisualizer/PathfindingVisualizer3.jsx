@@ -12,6 +12,7 @@ export default class PathfindingVisualizer2 extends React.Component {
     super(props);
     this.state = {
       grid: [],
+      algorithm: "Dijkstra's",
       mouseIsPressed: false,
       startNodePressed: false,
       finishNodePressed: false,
@@ -23,13 +24,12 @@ export default class PathfindingVisualizer2 extends React.Component {
       visited: 0,
       counted: 0,
     };
-    this.visualizeDijkstra = this.visualizeDijkstra.bind(this);
-    this.animateDijkstra = this.animateDijkstra.bind(this);
-    this.visualizeAStar = this.visualizeAStar.bind(this);
+    this.animateAlgorithm = this.animateAlgorithm.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.setSpeed = this.setSpeed.bind(this);
+    this.setAlgorithm = this.setAlgorithm.bind(this);
   }
 
   componentDidMount() {
@@ -183,7 +183,7 @@ export default class PathfindingVisualizer2 extends React.Component {
     }
   }
 
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
     const singleAnimationDuration = this.state.speedSeconds;
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -215,24 +215,16 @@ export default class PathfindingVisualizer2 extends React.Component {
     }
   }
 
-  visualizeDijkstra() {
+  visualize() {
     const { grid } = this.state;
     const startNode = grid[this.state.start.row][this.state.start.col];
     const finishNode = grid[this.state.finish.row][this.state.finish.col];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const visitedNodesInOrder =
+      this.state.algorithm === "Dijkstra's"
+        ? dijkstra(grid, startNode, finishNode)
+        : astar(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
-  }
-
-  visualizeAStar() {
-    const { grid } = this.state;
-    const startNode = grid[this.state.start.row][this.state.start.col];
-    const finishNode = grid[this.state.finish.row][this.state.finish.col];
-    const visitedNodesInOrder = astar(grid, startNode, finishNode);
-    //console.log("visitedNodesInOrder: ", visitedNodesInOrder);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    console.log("nodesInShortestPathOrder: ", nodesInShortestPathOrder);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   generateRandomMaze() {
@@ -257,6 +249,11 @@ export default class PathfindingVisualizer2 extends React.Component {
         this.setState({ grid: newGrid });
       }
     }
+  }
+
+  setAlgorithm(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   }
 
   setSpeed(event) {
@@ -295,17 +292,23 @@ export default class PathfindingVisualizer2 extends React.Component {
             <h2>Nodes counted: {counted}</h2>
           </div>
           <div>
-            <button id="btn" onClick={() => this.visualizeAStar()}>
-              Visualize Dijkstra's
+            <select
+              id="algo_dropdown"
+              name="algorithm"
+              value={this.state.algorithm}
+              onChange={this.setAlgorithm}
+            >
+              <option value="Dijkstra's">Diijkstra's</option>
+              <option value="A*">A*</option>
+            </select>
+            <button id="btn" onClick={() => this.visualize()}>
+              Visualize {this.state.algorithm}
             </button>
             <button id="btn" onClick={() => this.generateRandomMaze()}>
               Generate Random Walls
             </button>
             <button id="btn" onClick={() => this.reset()}>
               Reset
-            </button>
-            <button id="btn" onClick={() => this.showWidth()}>
-              Width
             </button>
             <select
               id="speed_dropdown"
