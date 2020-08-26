@@ -1,6 +1,7 @@
 import React from "react";
 import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
+import { astar } from "../algorithms/astar";
 import {
   dijkstra,
   getNodesInShortestPathOrder,
@@ -15,7 +16,7 @@ export default class PathfindingVisualizer2 extends React.Component {
       startNodePressed: false,
       finishNodePressed: false,
       start: { col: 5, row: 10 },
-      finish: { col: 45, row: 10 },
+      finish: { col: 20, row: 10 },
       speedText: "Fast",
       speedSeconds: 10,
       prevNode: null,
@@ -24,6 +25,7 @@ export default class PathfindingVisualizer2 extends React.Component {
     };
     this.visualizeDijkstra = this.visualizeDijkstra.bind(this);
     this.animateDijkstra = this.animateDijkstra.bind(this);
+    this.visualizeAStar = this.visualizeAStar.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
@@ -222,6 +224,17 @@ export default class PathfindingVisualizer2 extends React.Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  visualizeAStar() {
+    const { grid } = this.state;
+    const startNode = grid[this.state.start.row][this.state.start.col];
+    const finishNode = grid[this.state.finish.row][this.state.finish.col];
+    const visitedNodesInOrder = astar(grid, startNode, finishNode);
+    //console.log("visitedNodesInOrder: ", visitedNodesInOrder);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    console.log("nodesInShortestPathOrder: ", nodesInShortestPathOrder);
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
   generateRandomMaze() {
     const rows = 20,
       cols = 50;
@@ -282,7 +295,7 @@ export default class PathfindingVisualizer2 extends React.Component {
             <h2>Nodes counted: {counted}</h2>
           </div>
           <div>
-            <button id="btn" onClick={() => this.visualizeDijkstra()}>
+            <button id="btn" onClick={() => this.visualizeAStar()}>
               Visualize Dijkstra's
             </button>
             <button id="btn" onClick={() => this.generateRandomMaze()}>

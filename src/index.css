@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Alata&display=swap");
+* {
+  font-family: "Alata", sans-serif;
+}
 body {
   margin: 0;
   font-family: "Alata", sans-serif;
