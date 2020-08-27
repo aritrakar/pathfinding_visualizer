@@ -7,7 +7,7 @@ import {
   getNodesInShortestPathOrder,
 } from "../algorithms/dijkstras.js";
 
-export default class PathfindingVisualizer2 extends React.Component {
+export default class PathfindingVisualizer3 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
