@@ -122,12 +122,12 @@ function updateUnvisitedNeighbours(node, grid) {
  * @param {Node} finishNode The target Node
  * @returns {Node[]} Array containing Nodes in shortest path
  */
-export function getNodesInShortestPathOrder(finishNode) {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.previousNode;
-  }
-  return nodesInShortestPathOrder;
-}
+// export function getNodesInShortestPathOrder(finishNode) {
+//   const nodesInShortestPathOrder = [];
+//   let currentNode = finishNode;
+//   while (currentNode !== null) {
+//     nodesInShortestPathOrder.unshift(currentNode);
+//     currentNode = currentNode.previousNode;
+//   }
+//   return nodesInShortestPathOrder;
+// }

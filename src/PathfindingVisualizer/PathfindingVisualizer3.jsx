@@ -6,6 +6,7 @@ import {
   dijkstra,
   getNodesInShortestPathOrder,
 } from "../algorithms/dijkstras.js";
+import {bfs} from "../algorithms/bfs";
 
 export default class PathfindingVisualizer3 extends React.Component {
   constructor(props) {
@@ -313,6 +314,9 @@ export default class PathfindingVisualizer3 extends React.Component {
       case "A*":
         visitedNodesInOrder = astar(grid, startNode, finishNode);
         break;
+      case "BFS":
+        visitedNodesInOrder = bfs(grid, startNode, finishNode);
+        break;
       default:
         break;
     }
@@ -388,8 +392,9 @@ export default class PathfindingVisualizer3 extends React.Component {
 
   /**
    * @description Resets the grid WITHOUT reloading the page
+   * Problem: Do not use this because it does not truly reset the graph and causes weird problems.
    */
-  reset(){
+  reset2(){
     const {grid, numRows, numCols} = this.state;
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
@@ -409,10 +414,10 @@ export default class PathfindingVisualizer3 extends React.Component {
   /**
    * @description Resets the grid by reloading the page
    */
-  // reset2() {
-  //   //Hacky
-  //   window.location.reload(false);
-  // }
+  reset() {
+    //Hacky
+    window.location.reload(false);
+  }
 
   render() {
     const { grid, visited, counted } = this.state;
@@ -434,6 +439,7 @@ export default class PathfindingVisualizer3 extends React.Component {
             >
               <option value="Dijkstra's">Diijkstra's</option>
               <option value="A*">A*</option>
+              <option value="BFS">BFS</option>
             </select>
             <button id="btn" onClick={() => this.visualize()}>
               Visualize {this.state.algorithm}

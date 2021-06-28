@@ -22,9 +22,7 @@ export function dijkstra(grid, startNode, finishNode) {
     const closestNode = unvisitedNodes.shift(); //removes closestNode from unvisitedNodes
 
     // If the closest node is a wall
-    if (closestNode.isWall) {
-      continue;
-    }
+    if (closestNode.isWall) continue;
 
     //When there are NO valid paths. Eg. walls around source or target
     if (closestNode.distance === Infinity) {
