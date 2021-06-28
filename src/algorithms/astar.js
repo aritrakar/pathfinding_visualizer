@@ -50,15 +50,15 @@ function sortNodesByFScore(grid) {
   grid.sort((nodeA, nodeB) => nodeA.fscore - nodeB.fscore);
 }
 
-function getAllNodes(grid) {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
-    }
-  }
-  return nodes;
-}
+// function getAllNodes(grid) {
+//   const nodes = [];
+//   for (const row of grid) {
+//     for (const node of row) {
+//       nodes.push(node);
+//     }
+//   }
+//   return nodes;
+// }
 
 function getUnvisitedNeighbours(node, grid) {
   const neighbours = [];
@@ -90,6 +90,11 @@ function updateUnvisitedNeighbours(node, grid) {
   }
 }
 
+/**
+ * @description Gets the Nodes in the shortest path from start to target
+ * @param {Node} finishNode The target Node
+ * @returns {Node[]} Array containing Nodes in shortest path
+ */
 export function getNodesInShortestPathOrder(finishNode) {
   const nodesInShortestPathOrder = [];
   let currentNode = finishNode;

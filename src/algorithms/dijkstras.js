@@ -1,3 +1,10 @@
+/**
+ * @description Finds the shortest path between startNode and finishNode using Dijkstra's shortest path algorithm
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @param {Node} startNode Start Node
+ * @param {Node} finishNode Target Node
+ * @returns {Node[]} Nodes in the shortest path
+ */
 export function dijkstra(grid, startNode, finishNode) {
   /*
   if (!startNode || !finishNode || startNode === finishNode) {
@@ -9,16 +16,18 @@ export function dijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
 
+  // While there are still nodes to visit
   while (!!unvisitedNodes.length) {
-    //Double negation meaning?
     sortNodesByDistance(unvisitedNodes);
     const closestNode = unvisitedNodes.shift(); //removes closestNode from unvisitedNodes
 
+    // If the closest node is a wall
     if (closestNode.isWall) {
       continue;
     }
+
+    //When there are NO valid paths. Eg. walls around source or target
     if (closestNode.distance === Infinity) {
-      //When there are NO valid paths. Eg. walls around source or target
       visitedNodesInOrder.pop();
       return visitedNodesInOrder;
     }
@@ -26,6 +35,7 @@ export function dijkstra(grid, startNode, finishNode) {
     closestNode.isVisited = true;
     visitedNodesInOrder.push(closestNode);
 
+    // Found target
     if (closestNode === finishNode) {
       return visitedNodesInOrder;
     }
@@ -33,6 +43,10 @@ export function dijkstra(grid, startNode, finishNode) {
   }
 }
 
+/**
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @returns {Node[]} 1D rray containing all nodes in grid
+ */
 function getAllNodes(grid) {
   const nodes = [];
   for (const row of grid) {
@@ -43,6 +57,12 @@ function getAllNodes(grid) {
   return nodes;
 }
 
+/**
+ * @description Gets the unvisited neighbours of Node node
+ * @param {Node} node Node whose neighbours are fetched
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @returns
+ */
 function getUnvisitedNeighbours(node, grid) {
   const neighbours = [];
   const { col, row } = node;
@@ -65,6 +85,11 @@ function getUnvisitedNeighbours(node, grid) {
   return neighbours.filter((neighbour) => !neighbour.isVisited);
 }
 
+/**
+ * @description Sets the visited state of the neighbours of Node node to true.
+ * @param {Node} node Node whose neighbours have to be updated
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ */
 function updateUnvisitedNeighbours(node, grid) {
   const neighbours = getUnvisitedNeighbours(node, grid);
   for (const neighbour of neighbours) {
@@ -73,12 +98,21 @@ function updateUnvisitedNeighbours(node, grid) {
   }
 }
 
+/**
+ * @description Sorts Nodes by distance
+ * @param {Node[]} unvisitedNodes Array of unvisited Nodes
+ */
 function sortNodesByDistance(unvisitedNodes) {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance); //Absolute value?
 }
 
-// Backtracks from the finishNode to find the shortest path.
-// Only works when called *after* the dijkstra method above.
+/**
+ * @description Gets the Nodes in the shortest path from start to finish.
+ * Backtracks from the finishNode to find the shortest path.
+ * Only works when called *after* the dijkstra method above.
+ * @param {Node} finishNode Target Node
+ * @returns {Node[]} Nodes in the shortest path as an array
+ */
 export function getNodesInShortestPathOrder(finishNode) {
   const nodesInShortestPathOrder = [];
   let currentNode = finishNode;
