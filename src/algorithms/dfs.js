@@ -22,6 +22,7 @@ export function dfs(grid, startNode, finishNode) {
 
       for (const neighbour of neighbours) {
         stack.push(neighbour);
+        visitedNodesInOrder.push(neighbour);
       }
     }
     updateUnvisitedNeighbours(currentNode, neighbours);
