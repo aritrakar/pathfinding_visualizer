@@ -1,29 +1,28 @@
-import Queue from "../util/queue";
+import Stack from "../util/stack";
 import { getUnvisitedNeighbours } from "../util/common";
 
-export function bfs(grid, startNode, finishNode) {
+export function dfs(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
-  const queue = new Queue();
-  startNode.isVisited = true;
-  queue.enqueue(startNode);
-
-  while (!queue.isEmpty()) {
-    const currentNode = queue.dequeue();
-    console.log(`Visiting: ${currentNode.col} ${currentNode.row}`);
+  const stack = new Stack();
+  stack.push(startNode);
+  while (!stack.isEmpty()) {
+    const currentNode = stack.pop();
 
     if (currentNode.isWall) continue;
 
     if (currentNode === finishNode) {
       console.log("FINISHED 1");
-      console.log(queue.items);
+      console.log(stack.items);
       return visitedNodesInOrder;
     }
 
     const neighbours = getUnvisitedNeighbours(currentNode, grid);
-    for (const neighbour of neighbours) {
-      neighbour.isVisited = true;
-      queue.enqueue(neighbour);
-      visitedNodesInOrder.push(neighbour);
+    if (!currentNode.isVisited) {
+      currentNode.isVisited = true;
+
+      for (const neighbour of neighbours) {
+        stack.push(neighbour);
+      }
     }
     updateUnvisitedNeighbours(currentNode, neighbours);
   }

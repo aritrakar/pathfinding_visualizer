@@ -103,20 +103,3 @@ function updateUnvisitedNeighbours(node, grid) {
 function sortNodesByDistance(unvisitedNodes) {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance); //Absolute value?
 }
-
-/**
- * @description Gets the Nodes in the shortest path from start to finish.
- * Backtracks from the finishNode to find the shortest path.
- * Only works when called *after* the dijkstra method above.
- * @param {Node} finishNode Target Node
- * @returns {Node[]} Nodes in the shortest path as an array
- */
-export function getNodesInShortestPathOrder(finishNode) {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.previousNode;
-  }
-  return nodesInShortestPathOrder;
-}

@@ -1,12 +1,14 @@
 import React from "react";
 import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
-import { astar } from "../algorithms/astar";
-import {
-  dijkstra,
-  getNodesInShortestPathOrder,
-} from "../algorithms/dijkstras.js";
-import {bfs} from "../algorithms/bfs";
+//import { astar } from "../algorithms/astar";
+// import {
+//   dijkstra,
+//   getNodesInShortestPathOrder,
+// } from "../algorithms/dijkstras.js";
+//import {bfs} from "../algorithms/bfs";
+import { dijkstra, astar, bfs, dfs } from "../algorithms";
+import { getNodesInShortestPathOrder } from "../util/common";
 
 export default class PathfindingVisualizer3 extends React.Component {
   constructor(props) {
@@ -319,6 +321,9 @@ export default class PathfindingVisualizer3 extends React.Component {
       case "BFS":
         visitedNodesInOrder = bfs(grid, startNode, finishNode);
         break;
+      case "DFS":
+          visitedNodesInOrder = dfs(grid, startNode, finishNode);
+          break;
       default:
         break;
     }
@@ -442,6 +447,7 @@ export default class PathfindingVisualizer3 extends React.Component {
               <option value="Dijkstra's">Diijkstra's</option>
               <option value="A*">A*</option>
               <option value="BFS">BFS</option>
+              <option value="DFS">DFS</option>
             </select>
             <button id="btn" onClick={() => this.visualize()}>
               Visualize {this.state.algorithm}
