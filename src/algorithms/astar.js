@@ -1,9 +1,14 @@
+import {
+  getUnvisitedNeighbours,
+  updateUnvisitedNeighbours1,
+} from "../util/common";
+
 /**
  * @description Finds the shortest path between startNode and finishNode using the A* search algorithm
  * @param {Node[][]} grid Grid (2D array) of Nodes
  * @param {Node} startNode Start Node
  * @param {Node} finishNode Target Node
- * @returns {Node[]} Nodes in the shortest path
+ * @returns {Node[]} Nodes that have been VISITED (NOT the shortest path)
  */
 export function astar(grid, startNode, finishNode) {
   const closedList = [];
@@ -18,8 +23,6 @@ export function astar(grid, startNode, finishNode) {
     console.log(`currentNode: ${currentNode.col} ${currentNode.row}`);
 
     if (currentNode.isWall) continue;
-
-    //if (currentNode.distance === Infinity) return false;
 
     if (currentNode === finishNode) {
       console.log("closedList: ", closedList);
@@ -42,7 +45,7 @@ export function astar(grid, startNode, finishNode) {
       }
     }
 
-    updateUnvisitedNeighbours(currentNode, grid);
+    updateUnvisitedNeighbours1(currentNode, grid);
   }
 }
 
@@ -66,68 +69,3 @@ function ManhattanDistance(currentNode, targetNode) {
 function sortNodesByFScore(grid) {
   grid.sort((nodeA, nodeB) => nodeA.fscore - nodeB.fscore);
 }
-
-// function getAllNodes(grid) {
-//   const nodes = [];
-//   for (const row of grid) {
-//     for (const node of row) {
-//       nodes.push(node);
-//     }
-//   }
-//   return nodes;
-// }
-
-/**
- * @param {Node} node Node whose neighbours are fetched
- * @param {Node[][]} grid Grid (2D array) of Nodes
- * @returns {Node[]} Unvisited neighbours of Node node as a 1D array
- */
-function getUnvisitedNeighbours(node, grid) {
-  const neighbours = [];
-  const { col, row } = node;
-  //Top
-  if (row > 0) {
-    neighbours.push(grid[row - 1][col]);
-  }
-  //Bottom
-  if (row < grid.length - 1) {
-    neighbours.push(grid[row + 1][col]);
-  }
-  //Left
-  if (col > 0) {
-    neighbours.push(grid[row][col - 1]);
-  }
-  //Right
-  if (col < grid[row].length - 1) {
-    neighbours.push(grid[row][col + 1]);
-  }
-  return neighbours.filter((neighbour) => !neighbour.isVisited);
-}
-
-/**
- * @description Sets the visited state of the neighbours of Node node to true.
- * @param {Node} node Node whose neighbours have to be updated
- * @param {Node[][]} grid Grid (2D array) of Nodes
- */
-function updateUnvisitedNeighbours(node, grid) {
-  const neighbours = getUnvisitedNeighbours(node, grid);
-  for (const neighbour of neighbours) {
-    neighbour.distance = node.distance + 1;
-    neighbour.previousNode = node;
-  }
-}
-
-/**
- * @description Gets the Nodes in the shortest path from start to target
- * @param {Node} finishNode The target Node
- * @returns {Node[]} Array containing Nodes in shortest path
- */
-// export function getNodesInShortestPathOrder(finishNode) {
-//   const nodesInShortestPathOrder = [];
-//   let currentNode = finishNode;
-//   while (currentNode !== null) {
-//     nodesInShortestPathOrder.unshift(currentNode);
-//     currentNode = currentNode.previousNode;
-//   }
-//   return nodesInShortestPathOrder;
-// }

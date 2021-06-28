@@ -1,9 +1,11 @@
+import { getAllNodes, updateUnvisitedNeighbours1 } from "../util/common";
+
 /**
  * @description Finds the shortest path between startNode and finishNode using Dijkstra's shortest path algorithm
  * @param {Node[][]} grid Grid (2D array) of Nodes
  * @param {Node} startNode Start Node
  * @param {Node} finishNode Target Node
- * @returns {Node[]} Nodes in the shortest path
+ * @returns {Node[]} Nodes that have been VISITED (NOT the shortest path)
  */
 export function dijkstra(grid, startNode, finishNode) {
   /*
@@ -37,62 +39,7 @@ export function dijkstra(grid, startNode, finishNode) {
     if (closestNode === finishNode) {
       return visitedNodesInOrder;
     }
-    updateUnvisitedNeighbours(closestNode, grid);
-  }
-}
-
-/**
- * @param {Node[][]} grid Grid (2D array) of Nodes
- * @returns {Node[]} 1D rray containing all nodes in grid
- */
-function getAllNodes(grid) {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
-    }
-  }
-  return nodes;
-}
-
-/**
- * @description Gets the unvisited neighbours of Node node
- * @param {Node} node Node whose neighbours are fetched
- * @param {Node[][]} grid Grid (2D array) of Nodes
- * @returns
- */
-function getUnvisitedNeighbours(node, grid) {
-  const neighbours = [];
-  const { col, row } = node;
-  //Top
-  if (row > 0) {
-    neighbours.push(grid[row - 1][col]);
-  }
-  //Bottom
-  if (row < grid.length - 1) {
-    neighbours.push(grid[row + 1][col]);
-  }
-  //Left
-  if (col > 0) {
-    neighbours.push(grid[row][col - 1]);
-  }
-  //Right
-  if (col < grid[row].length - 1) {
-    neighbours.push(grid[row][col + 1]);
-  }
-  return neighbours.filter((neighbour) => !neighbour.isVisited);
-}
-
-/**
- * @description Sets the visited state of the neighbours of Node node to true.
- * @param {Node} node Node whose neighbours have to be updated
- * @param {Node[][]} grid Grid (2D array) of Nodes
- */
-function updateUnvisitedNeighbours(node, grid) {
-  const neighbours = getUnvisitedNeighbours(node, grid);
-  for (const neighbour of neighbours) {
-    neighbour.distance = node.distance + 1;
-    neighbour.previousNode = node;
+    updateUnvisitedNeighbours1(closestNode, grid);
   }
 }
 

@@ -1,18 +1,27 @@
 import Stack from "../util/stack";
-import { getUnvisitedNeighbours } from "../util/common";
+import {
+  getUnvisitedNeighbours,
+  updateUnvisitedNeighbours2,
+} from "../util/common";
 
+/**
+ * @description Finds the shortest path between startNode and finishNode using the Depth-First Search algorithm
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @param {Node} startNode Start Node
+ * @param {Node} finishNode Target Node
+ * @returns {Node[]} Nodes that have been VISITED (NOT the shortest path)
+ */
 export function dfs(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   const stack = new Stack();
   stack.push(startNode);
+
   while (!stack.isEmpty()) {
     const currentNode = stack.pop();
 
     if (currentNode.isWall) continue;
 
     if (currentNode === finishNode) {
-      console.log("FINISHED 1");
-      console.log(stack.items);
       return visitedNodesInOrder;
     }
 
@@ -25,17 +34,6 @@ export function dfs(grid, startNode, finishNode) {
         visitedNodesInOrder.push(neighbour);
       }
     }
-    updateUnvisitedNeighbours(currentNode, neighbours);
-  }
-}
-
-/**
- * @description Sets the visited state of the neighbours of Node node to true.
- * @param {Node} node Node whose neighbours have to be updated
- * @param {Node[][]} grid Grid (2D array) of Nodes
- */
-function updateUnvisitedNeighbours(node, neighbours) {
-  for (const neighbour of neighbours) {
-    neighbour.previousNode = node;
+    updateUnvisitedNeighbours2(currentNode, neighbours);
   }
 }

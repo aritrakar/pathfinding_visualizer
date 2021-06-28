@@ -1,6 +1,16 @@
 import Queue from "../util/queue";
-import { getUnvisitedNeighbours } from "../util/common";
+import {
+  getUnvisitedNeighbours,
+  updateUnvisitedNeighbours2,
+} from "../util/common";
 
+/**
+ * @description Finds the shortest path between startNode and finishNode using the Breadth-First Search algorithm
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @param {Node} startNode Start Node
+ * @param {Node} finishNode Target Node
+ * @returns {Node[]} Nodes that have been VISITED (NOT the shortest path)
+ */
 export function bfs(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   const queue = new Queue();
@@ -9,13 +19,10 @@ export function bfs(grid, startNode, finishNode) {
 
   while (!queue.isEmpty()) {
     const currentNode = queue.dequeue();
-    console.log(`Visiting: ${currentNode.col} ${currentNode.row}`);
 
     if (currentNode.isWall) continue;
 
     if (currentNode === finishNode) {
-      console.log("FINISHED 1");
-      console.log(queue.items);
       return visitedNodesInOrder;
     }
 
@@ -25,17 +32,6 @@ export function bfs(grid, startNode, finishNode) {
       queue.enqueue(neighbour);
       visitedNodesInOrder.push(neighbour);
     }
-    updateUnvisitedNeighbours(currentNode, neighbours);
-  }
-}
-
-/**
- * @description Sets the visited state of the neighbours of Node node to true.
- * @param {Node} node Node whose neighbours have to be updated
- * @param {Node[][]} grid Grid (2D array) of Nodes
- */
-function updateUnvisitedNeighbours(node, neighbours) {
-  for (const neighbour of neighbours) {
-    neighbour.previousNode = node;
+    updateUnvisitedNeighbours2(currentNode, neighbours);
   }
 }

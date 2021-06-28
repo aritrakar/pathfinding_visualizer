@@ -1,4 +1,18 @@
 /**
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @returns {Node[]} 1D rray containing all nodes in grid
+ */
+export function getAllNodes(grid) {
+  const nodes = [];
+  for (const row of grid) {
+    for (const node of row) {
+      nodes.push(node);
+    }
+  }
+  return nodes;
+}
+
+/**
  * @param {Node} node Node whose neighbours are fetched
  * @param {Node[][]} grid Grid (2D array) of Nodes
  * @returns Returns the unvisited neighbours of Node node as an array
@@ -25,6 +39,30 @@ export function getUnvisitedNeighbours(node, grid) {
   return neighbours.filter(
     (neighbour) => !neighbour.isVisited && !neighbour.isWall
   );
+}
+
+/**
+ * @description Sets the visited state of the neighbours of Node node to true.
+ * @param {Node} node Node whose neighbours have to be updated
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ */
+export function updateUnvisitedNeighbours1(node, grid) {
+  const neighbours = getUnvisitedNeighbours(node, grid);
+  for (const neighbour of neighbours) {
+    neighbour.distance = node.distance + 1;
+    neighbour.previousNode = node;
+  }
+}
+
+/**
+ * @description Sets the visited state of the neighbours of Node node to true.
+ * @param {Node} node Node whose neighbours have to be updated
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ */
+export function updateUnvisitedNeighbours2(node, neighbours) {
+  for (const neighbour of neighbours) {
+    neighbour.previousNode = node;
+  }
 }
 
 /**
