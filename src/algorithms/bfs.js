@@ -1,6 +1,7 @@
 import Queue from "../util/queue";
 
 export function bfs(grid, startNode, finishNode) {
+  const visitedNodesInOrder = [];
   const queue = new Queue();
   startNode.isVisited = true;
   queue.enqueue(startNode);
@@ -15,7 +16,7 @@ export function bfs(grid, startNode, finishNode) {
       console.log("FINISHED 1");
       console.log(queue.items);
       //return currentNode;
-      return queue.items;
+      return visitedNodesInOrder;
     }
 
     const neighbours = getUnvisitedNeighbours(currentNode, grid);
@@ -23,9 +24,10 @@ export function bfs(grid, startNode, finishNode) {
       //if (!neighbour.isVisited) {
       neighbour.isVisited = true;
       queue.enqueue(neighbour);
+      visitedNodesInOrder.push(neighbour);
       //}
     }
-    updateUnvisitedNeighbours(currentNode, grid);
+    updateUnvisitedNeighbours(currentNode, neighbours);
   }
   //   console.log("FINISHED 2");
   //   console.log(queue.items);
@@ -57,7 +59,9 @@ function getUnvisitedNeighbours(node, grid) {
   if (col < grid[row].length - 1) {
     neighbours.push(grid[row][col + 1]);
   }
-  return neighbours.filter((neighbour) => !neighbour.isVisited);
+  return neighbours.filter(
+    (neighbour) => !neighbour.isVisited && !neighbour.isWall
+  );
 }
 
 /**
@@ -65,10 +69,9 @@ function getUnvisitedNeighbours(node, grid) {
  * @param {Node} node Node whose neighbours have to be updated
  * @param {Node[][]} grid Grid (2D array) of Nodes
  */
-function updateUnvisitedNeighbours(node, grid) {
-  const neighbours = getUnvisitedNeighbours(node, grid);
+function updateUnvisitedNeighbours(node, neighbours) {
+  //console.log(`UPDATING ${node.col} ${node.row}`);
   for (const neighbour of neighbours) {
-    neighbour.distance = node.distance + 1;
     neighbour.previousNode = node;
   }
 }

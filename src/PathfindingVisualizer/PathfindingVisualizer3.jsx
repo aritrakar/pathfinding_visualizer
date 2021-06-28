@@ -248,25 +248,27 @@ export default class PathfindingVisualizer3 extends React.Component {
   animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
     const singleAnimationDuration = this.state.speedSeconds;
 
-    // Traverse the visitedNodesInOrder array and set each Node to visited
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      // If it is the last Node then animate the shortest path
-      if (i === visitedNodesInOrder.length) {
+    if (visitedNodesInOrder?.length > 0){
+      // Traverse the visitedNodesInOrder array and set each Node to visited
+      for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+        // If it is the last Node then animate the shortest path
+        if (i === visitedNodesInOrder.length) {
+          setTimeout(() => {
+            this.animateShortestPath(nodesInShortestPathOrder);
+          }, singleAnimationDuration * i);
+          return;
+        }
+
+        // Set Node to visited and change its HTML class
         setTimeout(() => {
-          this.animateShortestPath(nodesInShortestPathOrder);
+          const node = visitedNodesInOrder[i];
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-visited";
         }, singleAnimationDuration * i);
-        return;
+
+        // Increase the visited Nodes count
+        this.setState({ visited: i + 1 });
       }
-
-      // Set Node to visited and change its HTML class
-      setTimeout(() => {
-        const node = visitedNodesInOrder[i];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-visited";
-      }, singleAnimationDuration * i);
-
-      // Increase the visited Nodes count
-      this.setState({ visited: i + 1 });
     }
   }
 
