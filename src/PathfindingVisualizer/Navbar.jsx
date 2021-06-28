@@ -1,6 +1,16 @@
 import React from "react";
 import "./PathfindingVisualizer.css";
 
+/**
+ * 
+ * @param {object} props 
+ * @prop {number} visited Number of nodes visited
+ * @prop {number} counted Number of nodes counted
+ * @prop {string} visualizeAlgorithm Which algorithm to visualize
+ * @prop {function} maze Function that generates random walls
+ * @prop {function} reset Function that resets the grid by reloading the page
+ * @returns Navbar
+ */
 export default function Navbar(props) {
   const { visited, counted, visualizeAlgorithm, maze, reset } = props;
   return (
