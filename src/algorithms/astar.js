@@ -1,3 +1,10 @@
+/**
+ * @description Finds the shortest path between startNode and finishNode using the A* search algorithm
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @param {Node} startNode Start Node
+ * @param {Node} finishNode Target Node
+ * @returns {Node[]} Nodes in the shortest path
+ */
 export function astar(grid, startNode, finishNode) {
   const closedList = [];
   const openList = [startNode]; //getAllNodes(grid);
@@ -39,6 +46,12 @@ export function astar(grid, startNode, finishNode) {
   }
 }
 
+/**
+ * @description Manhattan distance between (x1,y1) and (x2,y2) is calculated as |x1-x2| + |y1-y2|
+ * @param {Node} currentNode
+ * @param {Node} targetNode
+ * @returns Manhattan distance between currentNode and targetNode
+ */
 function ManhattanDistance(currentNode, targetNode) {
   const temp =
     Math.abs(currentNode.col - targetNode.col) +
@@ -46,6 +59,10 @@ function ManhattanDistance(currentNode, targetNode) {
   return temp;
 }
 
+/**
+ * @description Sorts the entire grid by the f-score
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ */
 function sortNodesByFScore(grid) {
   grid.sort((nodeA, nodeB) => nodeA.fscore - nodeB.fscore);
 }
@@ -60,6 +77,11 @@ function sortNodesByFScore(grid) {
 //   return nodes;
 // }
 
+/**
+ * @param {Node} node Node whose neighbours are fetched
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ * @returns {Node[]} Unvisited neighbours of Node node as a 1D array
+ */
 function getUnvisitedNeighbours(node, grid) {
   const neighbours = [];
   const { col, row } = node;
@@ -82,6 +104,11 @@ function getUnvisitedNeighbours(node, grid) {
   return neighbours.filter((neighbour) => !neighbour.isVisited);
 }
 
+/**
+ * @description Sets the visited state of the neighbours of Node node to true.
+ * @param {Node} node Node whose neighbours have to be updated
+ * @param {Node[][]} grid Grid (2D array) of Nodes
+ */
 function updateUnvisitedNeighbours(node, grid) {
   const neighbours = getUnvisitedNeighbours(node, grid);
   for (const neighbour of neighbours) {
